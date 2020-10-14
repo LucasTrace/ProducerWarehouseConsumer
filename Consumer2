@@ -1,0 +1,55 @@
+package ProducerWarehouseConsumer;
+
+import Production.Product;
+
+public class GPPConsumer extends Consumer implements Runnable{
+	WareHouse warehouse;
+	public GPPConsumer() {
+		
+	}
+	public GPPConsumer(WareHouse warehouse,String nameOfConsumer) {
+		this.warehouse=warehouse;
+		this.nameOfConsumer=nameOfConsumer;
+	}
+	public void Consume() {
+		Object obj=warehouse.queueOfGP.poll();
+		Product gp=(Product)obj;
+		gp.display();
+		//System.out.println(warehouse.queueOfGP.size());
+	}
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		while(true) {
+			synchronized(warehouse) {
+				if(warehouse.queueOfGP.size()>=3) {
+					System.out.println("当前平面产品数量"+warehouse.queueOfGP.size());
+					System.out.println(Thread.currentThread().getName()+"开始消费");	
+					Consume();
+					Consume();
+					Consume();
+					if(warehouse.queueOfGP.size()==0) {
+						System.out.println("抱歉！当前平面产品数量"+warehouse.queueOfGP.size()+",平面产品已售罄");
+						return;
+					}
+				}else if(warehouse.queueOfGP.size()==0){
+					try {
+						warehouse.wait();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				warehouse.notify();
+				
+			}
+		}
+		
+	}
+}
