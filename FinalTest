@@ -1,0 +1,31 @@
+package ProducerWarehouseConsumer;
+
+public class FinalTest {
+
+	public static void main(String[] args) {
+		WareHouse w=new WareHouse();
+
+		Thread p1=new Thread(new GPProducer(w,"GraphicProducer1"));
+		Thread p2=new Thread(new TDProducer(w,"ThreeDProducer2"));
+		
+		Thread c1=new Thread(new GPPConsumer(w,"GraphicConsumer1"));
+		Thread c2=new Thread(new TDPConsumer(w,"ThreeDConsumer2"));
+		
+		p1.setName("平面产品生产者");
+		p2.setName("三维产品生产者");
+		c1.setName("平面产品消费者");
+		c2.setName("三维产品消费者");
+		
+		p1.setPriority(10);
+		p2.setPriority(10);
+		c1.setPriority(1);
+		c2.setPriority(1);
+		
+		p1.start();
+		p2.start();
+		c1.start();
+		c2.start();
+
+	}
+
+}
