@@ -1,0 +1,13 @@
+package Production;
+
+public class Product {
+	String nameOfProducer;
+	int productNum;
+	String productType;
+	public void process() {
+		
+	}
+	public void display() {
+		
+	}
+}
