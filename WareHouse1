@@ -1,0 +1,27 @@
+package ProducerWarehouseConsumer;
+
+import java.util.ArrayDeque;
+import java.util.Queue;
+
+public class WareHouse {
+	
+	public Queue queueOfGP=new ArrayDeque();
+	public Queue queueOfTDP=new ArrayDeque();
+	
+	double areaOfWarehouse=1000;
+	double volumeOfWarehouse=1000;
+	
+	public WareHouse() {
+		
+	}
+	public WareHouse(double areaOfWarehouse,double volumeOfWarehouse) {
+		this.areaOfWarehouse=areaOfWarehouse;
+		this.volumeOfWarehouse=volumeOfWarehouse;
+	}
+	public void printRestareaOfWarehouse() {
+		System.out.println("剩余仓库面积： "+areaOfWarehouse+"平方米");
+	}
+	public void printRestvomlumeOfWarehouse() {
+		System.out.println("剩余仓库体积： "+volumeOfWarehouse+"立方米");
+	}
+}
