@@ -1,0 +1,31 @@
+package Production;
+
+public class Cuboid extends ThreeDProduct{
+	private double length;
+	private double width;
+	private double height;
+	public Cuboid() {
+		
+	}
+	public Cuboid(double length,double width,double height,String nameOfProducer,int productNum,String productType) {
+		this.length=length;
+		this.width=width;
+		this.height=height;
+		super.nameOfProducer=nameOfProducer;
+		super.productNum=productNum;
+		super.productType=productType;
+	}
+	public double volume() {
+		double V=length*width*height;
+		return V;
+	}
+	public void display() {
+		System.out.println("*********************");
+		System.out.println("生产者名称： "+super.nameOfProducer);
+		System.out.println("产品编号： "+super.productNum+"-"+super.productType);
+		System.out.println("产品类型(1-平面产品   2-三维产品)： "+ThreeD.TYPE_GRAPHIC);
+		System.out.println("体积： "+this.volume());
+		System.out.println("三维产品"+super.productNum+"-"+super.productType+"消费成功");
+		System.out.println("*********************");
+	}
+}
