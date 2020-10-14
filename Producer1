@@ -1,0 +1,8 @@
+import Production.Product;
+
+public abstract class Producer extends WareHouse{
+	String nameOfProducer;
+	public Product build() {
+		return null;
+	}
+}
