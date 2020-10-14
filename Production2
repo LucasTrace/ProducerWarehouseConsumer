@@ -1,0 +1,12 @@
+package Production;
+
+interface Graphic{
+	double area();
+	public static final int TYPE_GRAPHIC=1;
+}
+
+public class GraphicProduct extends Product implements Graphic{
+	public double area() {
+		return 0;
+	}
+}
