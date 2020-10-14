@@ -1,0 +1,30 @@
+package Production;
+
+public class Rectangle extends GraphicProduct{
+	private double length;
+	private double width;
+	public Rectangle(){
+		
+	}
+	public Rectangle(double length,double width,String nameOfProducer,int productNum,String productType) {
+		this.length=length;
+		this.width=width;
+		super.nameOfProducer=nameOfProducer;
+		super.productNum=productNum;
+		super.productType=productType;
+	}
+	public double area() {
+		double S=length*width;
+		return S;
+	}
+	public void display() {
+		System.out.println("*********************");
+		System.out.println("生产者名称： "+super.nameOfProducer);
+		System.out.println("产品编号： "+super.productNum+"-"+super.productType);
+		System.out.println("产品类型(1-平面产品   2-三维产品)： "+Graphic.TYPE_GRAPHIC);
+		System.out.println("面积： "+this.area());
+		System.out.println("平面产品"+super.productNum+"-"+super.productType+"消费成功");
+		System.out.println("*********************");
+	}
+	
+}
