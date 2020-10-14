@@ -1,0 +1,85 @@
+package ProducerWarehouseConsumer;
+
+import Production.*;
+
+public class TDProducer extends Producer implements Runnable{
+	WareHouse warehouse;
+	private int CuboidCount=0;
+	private int CylinderCount=0;
+	private int SphereCount=0;
+	private int TDPCount=0;
+	public TDProducer() {
+		
+	}
+	public TDProducer(WareHouse warehouse,String nameOfProducer) {
+		this.warehouse=warehouse;
+		super.nameOfProducer=nameOfProducer;
+	}
+	public Product build(String productNum) {
+		if(productNum=="长方体") {
+			CuboidCount++;
+			TDPCount++;
+			ThreeDProduct tdp=new Cuboid(52,2,2,super.nameOfProducer,CuboidCount,productNum);
+			addTDProduct(tdp);
+			super.volumeOfWarehouse-=tdp.volume();
+			return tdp;
+		}else if(productNum=="圆柱体") {
+			CylinderCount++;
+			TDPCount++;
+			ThreeDProduct tdp=new Cylinder(5,2,super.nameOfProducer,CylinderCount,productNum);
+			addTDProduct(tdp);
+			super.volumeOfWarehouse-=tdp.volume();
+			return tdp;
+		}else if(productNum=="球") {
+			SphereCount++;
+			TDPCount++;
+			ThreeDProduct tdp=new Sphere(2,super.nameOfProducer,SphereCount,productNum);
+			addTDProduct(tdp);
+			super.volumeOfWarehouse-=tdp.volume();
+			return tdp;
+		}
+		return null;
+	}
+	
+	public void addTDProduct(ThreeDProduct tdp) {
+		warehouse.queueOfTDP.add(tdp);
+	}
+	
+	public Object getTDProduct() {
+		return queueOfTDP.peek();
+	}
+	public void run() {
+		// TODO Auto-generated method stub
+		while(true) {
+			synchronized(warehouse) {
+				if(volumeOfWarehouse>500) {
+					System.out.println(Thread.currentThread().getName()+"开始生产");	
+					printRestvomlumeOfWarehouse();
+					build("长方体");
+					build("圆柱体");
+					build("球");
+					printRestvomlumeOfWarehouse();
+					//System.out.println(warehouse.queueOfTDP.size());
+				}else {
+					try {
+						warehouse.wait();
+						break;
+						//System.out.println("等待三维产品消费中……");
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				warehouse.notify();
+			}
+		}
+		
+	}
+	
+}
