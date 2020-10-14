@@ -1,0 +1,32 @@
+package Production;
+
+public class Triangle extends GraphicProduct{
+	private double a;
+	private double b;
+	private double c;
+	public Triangle() {
+		
+	}
+	public Triangle(double a,double b,double c,String nameOfProducer,int productNum,String productType) {
+		this.a=a;
+		this.b=b;
+		this.c=c;
+		super.nameOfProducer=nameOfProducer;
+		super.productNum=productNum;
+		super.productType=productType;
+	}
+	public double area() {
+		double halfsum=(a+b+c)/2;
+		double S=Math.sqrt(halfsum*(halfsum-a)*(halfsum-b)*(halfsum-c));
+		return S;
+	}
+	public void display() {
+		System.out.println("*********************");
+		System.out.println("生产者名称： "+super.nameOfProducer);
+		System.out.println("产品编号： "+super.productNum+"-"+super.productType);
+		System.out.println("产品类型(1-平面产品   2-三维产品) ："+Graphic.TYPE_GRAPHIC);
+		System.out.println("面积： "+this.area());
+		System.out.println("平面产品"+super.productNum+"-"+super.productType+"消费成功");
+		System.out.println("*********************");
+	}
+}
