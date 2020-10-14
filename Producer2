@@ -1,0 +1,84 @@
+package ProducerWarehouseConsumer;
+
+import Production.*;
+
+public class GPProducer extends Producer implements Runnable{
+	WareHouse warehouse;
+	private int RectangleCount=0;
+	private int TriangleCount=0;
+	private int TrapezoidCount=0;
+	private int GPPCount=0;
+	public GPProducer() {
+		
+	}
+	public GPProducer(WareHouse warehouse,String nameOfProducer) {
+		this.warehouse=warehouse;
+		super.nameOfProducer=nameOfProducer;
+	}
+	public Product build(String productNum) {
+		if(productNum=="正方形") {
+			RectangleCount++;
+			GPPCount++;
+			GraphicProduct gp=new Rectangle(5,5,super.nameOfProducer,RectangleCount,productNum);
+			addGPProduct(gp);
+			super.areaOfWarehouse-=gp.area();
+			return gp;
+		}else if(productNum=="三角形") {
+			TriangleCount++;
+			GPPCount++;
+			GraphicProduct gp=new Triangle(5,5,5,super.nameOfProducer,TriangleCount,productNum);
+			addGPProduct(gp);
+			super.areaOfWarehouse-=gp.area();
+			return gp;
+		}else if(productNum=="梯形") {
+			TrapezoidCount++;
+			GPPCount++;
+			GraphicProduct gp=new Trapezoid(5,5,5,super.nameOfProducer,TrapezoidCount,productNum);
+			addGPProduct(gp);
+			super.areaOfWarehouse-=gp.area();
+			return gp;
+		}
+		return null;
+	}
+	public void addGPProduct(GraphicProduct gp) {
+		warehouse.queueOfGP.add(gp);
+	}
+	public Object getGPProduct() {
+		return queueOfGP.peek();
+	}
+	public void run() {
+		// TODO Auto-generated method stub
+		while(true) {
+			synchronized(warehouse) {
+				if(areaOfWarehouse>900) {
+					System.out.println(Thread.currentThread().getName()+"开始生产");
+					printRestareaOfWarehouse();
+					build("正方形");
+					build("三角形");
+					build("梯形");
+					printRestareaOfWarehouse();
+					//System.out.println(warehouse.queueOfGP.size());
+				}else {
+					try {
+						warehouse.wait();
+						break;
+						//System.out.println("等待平面产品消费中……");
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				warehouse.notify();
+				
+			}
+		}
+		
+	}
+	
+}
