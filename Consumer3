@@ -1,0 +1,55 @@
+package ProducerWarehouseConsumer;
+
+import Production.Product;
+
+public class TDPConsumer extends Consumer implements Runnable{
+	WareHouse warehouse;
+	public TDPConsumer() {
+		
+	}
+	public TDPConsumer(WareHouse warehouse,String nameOfConsumer) {
+		this.warehouse=warehouse;
+		this.nameOfConsumer=nameOfConsumer;
+	}
+	public void Consume() {
+		Object obj=warehouse.queueOfTDP.poll();
+		Product tdp=(Product)obj;
+		tdp.display();
+		//System.out.println(warehouse.queueOfTDP.size());
+	}
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		while(true) {
+			synchronized(warehouse) {
+				if(warehouse.queueOfTDP.size()>=3) {
+					System.out.println("当前三维产品数量"+warehouse.queueOfTDP.size());
+					System.out.println(Thread.currentThread().getName()+"开始消费");	
+					Consume();
+					Consume();
+					Consume();
+					if(warehouse.queueOfTDP.size()==0) {
+						System.out.println("抱歉！当前三维产品数量"+warehouse.queueOfTDP.size()+",三维产品已售罄");
+						return;
+					}
+				}else if(warehouse.queueOfTDP.size()==0){
+					try {
+						warehouse.wait();
+						//System.out.println("等待三维产品生产中……");
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				warehouse.notify();
+			}
+		}
+		
+	}
+}
