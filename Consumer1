@@ -1,0 +1,10 @@
+package ProducerWarehouseConsumer;
+
+import Production.Product;
+
+public class Consumer {
+	String nameOfConsumer;
+	public void Consume(Product p) {
+		
+	}
+}
